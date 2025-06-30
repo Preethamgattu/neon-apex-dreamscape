@@ -36,13 +36,14 @@ const Certifications = () => {
   ];
 
   return (
-    <section id="certifications" className="py-20 relative">
+    <section id="certifications" className="py-20 bg-white">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="font-orbitron text-4xl md:text-6xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-            DIGITAL CREDENTIALS
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+            Certifications
           </h2>
-          <p className="font-rajdhani text-xl text-foreground/70 max-w-2xl mx-auto">
+          <div className="section-divider"></div>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Official Salesforce certifications validating expertise and commitment to excellence
           </p>
         </div>
@@ -51,50 +52,48 @@ const Certifications = () => {
           {certifications.map((cert, index) => (
             <div
               key={cert.credentialId}
-              className={`neon-border holographic p-6 rounded-lg text-center hover:scale-105 transition-all duration-500 animate-fade-in-up`}
+              className={`professional-card hover-lift text-center animate-fade-in-up`}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="text-4xl mb-4 animate-float">
+              <div className="text-3xl mb-4">
                 {cert.icon}
               </div>
               
-              <h3 className="font-orbitron text-lg font-bold text-primary mb-2">
+              <h3 className="text-lg font-semibold text-foreground mb-2">
                 {cert.title}
               </h3>
               
-              <p className="font-rajdhani text-foreground/80 mb-2">
+              <p className="text-muted-foreground mb-2">
                 {cert.issuer}
               </p>
               
-              <p className="font-rajdhani text-sm text-foreground/60 mb-3">
+              <p className="text-sm text-muted-foreground mb-3">
                 Issued: {cert.date}
               </p>
               
-              <div className="inline-block px-3 py-1 bg-accent/20 border border-accent/30 rounded-full">
-                <span className="font-rajdhani text-xs text-accent font-semibold">
+              <div className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full mb-4">
+                <span className="text-xs font-medium">
                   {cert.status}
                 </span>
               </div>
               
-              <div className="mt-4 pt-4 border-t border-primary/20">
-                <p className="font-rajdhani text-xs text-foreground/50 font-mono">
+              <div className="pt-4 border-t">
+                <p className="font-mono text-xs text-muted-foreground">
                   ID: {cert.credentialId}
                 </p>
               </div>
-
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg pointer-events-none"></div>
             </div>
           ))}
         </div>
 
         <div className="mt-16 text-center">
-          <div className="inline-block neon-border holographic p-6 rounded-lg">
-            <h3 className="font-orbitron text-xl font-bold text-primary mb-4">VERIFICATION</h3>
-            <p className="font-rajdhani text-foreground/70 mb-4">
+          <div className="professional-card max-w-md mx-auto">
+            <h3 className="text-xl font-semibold text-foreground mb-4">Verification</h3>
+            <p className="text-muted-foreground mb-4">
               All certifications can be verified through Salesforce Trailhead
             </p>
-            <button className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-background font-rajdhani font-semibold rounded-lg hover:scale-105 transition-all duration-300 animate-glow">
-              VERIFY CREDENTIALS
+            <button className="px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors duration-200">
+              Verify Credentials
             </button>
           </div>
         </div>

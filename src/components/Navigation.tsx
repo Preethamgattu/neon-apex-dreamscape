@@ -6,18 +6,17 @@ const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const navItems = [
-    { id: 'home', label: 'HOME' },
-    { id: 'skills', label: 'SKILLS' },
-    { id: 'projects', label: 'PROJECTS' },
-    { id: 'certifications', label: 'CERTIFICATIONS' },
-    { id: 'contact', label: 'CONTACT' }
+    { id: 'home', label: 'Home' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'certifications', label: 'Certifications' },
+    { id: 'contact', label: 'Contact' }
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
       
-      // Update active section based on scroll position
       const sections = navItems.map(item => document.getElementById(item.id));
       const scrollPosition = window.scrollY + 100;
 
@@ -43,12 +42,12 @@ const Navigation = () => {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-background/80 backdrop-blur-md border-b border-primary/20' : 'bg-transparent'
+      isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-sm border-b' : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          <div className="font-orbitron font-bold text-xl text-primary animate-pulse-neon">
-            SF.DEV
+          <div className="font-mono font-semibold text-xl text-foreground">
+            Alex Chen
           </div>
           
           <div className="hidden md:flex space-x-8">
@@ -56,20 +55,20 @@ const Navigation = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`font-rajdhani font-medium text-sm tracking-wider transition-all duration-300 hover:text-primary relative ${
-                  activeSection === item.id ? 'text-primary' : 'text-foreground/70'
+                className={`font-medium text-sm transition-colors duration-200 hover:text-primary relative ${
+                  activeSection === item.id ? 'text-primary' : 'text-muted-foreground'
                 }`}
               >
                 {item.label}
                 {activeSection === item.id && (
-                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary animate-glow" />
+                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary" />
                 )}
               </button>
             ))}
           </div>
 
           <div className="md:hidden">
-            <button className="text-primary">
+            <button className="text-foreground">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>

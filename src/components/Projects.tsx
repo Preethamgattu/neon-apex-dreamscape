@@ -48,13 +48,14 @@ const Projects = () => {
   ];
 
   return (
-    <section id="projects" className="py-20 relative">
+    <section id="projects" className="py-20 bg-slate-50">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="font-orbitron text-4xl md:text-6xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
-            PROJECT ARCHIVE
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+            Featured Projects
           </h2>
-          <p className="font-rajdhani text-xl text-foreground/70 max-w-2xl mx-auto">
+          <div className="section-divider"></div>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Showcase of enterprise-grade Salesforce solutions with measurable business impact
           </p>
         </div>
@@ -63,71 +64,65 @@ const Projects = () => {
           {projects.map((project, index) => (
             <div
               key={project.id}
-              className={`group relative neon-border holographic rounded-lg overflow-hidden transition-all duration-500 hover:scale-105 animate-fade-in-up`}
+              className={`professional-card hover-lift animate-fade-in-up bg-white`}
               style={{ animationDelay: `${index * 0.2}s` }}
               onMouseEnter={() => setHoveredProject(project.id)}
               onMouseLeave={() => setHoveredProject(null)}
             >
-              <div className="relative h-64 bg-gradient-to-br from-primary/20 to-secondary/20 overflow-hidden">
+              <div className="relative h-48 bg-gradient-to-br from-primary/10 to-accent/10 rounded-lg overflow-hidden mb-6">
                 <img
-                  src={`https://images.unsplash.com/${project.image}?w=600&h=400&fit=crop`}
+                  src={`https://images.unsplash.com/${project.image}?w=600&h=300&fit=crop`}
                   alt={project.title}
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-300"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent"></div>
-                
-                <div className={`absolute top-4 right-4 transition-all duration-300 ${
-                  hoveredProject === project.id ? 'scale-110' : 'scale-100'
-                }`}>
-                  <div className="w-12 h-12 bg-primary/20 backdrop-blur-md rounded-full flex items-center justify-center border border-primary/30">
-                    <span className="text-primary font-orbitron font-bold">0{project.id}</span>
+                <div className="absolute top-4 right-4">
+                  <div className="w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-primary font-mono font-semibold text-sm">
+                    {project.id}
                   </div>
                 </div>
               </div>
 
-              <div className="p-6">
-                <h3 className="font-orbitron text-xl font-bold text-primary mb-3 group-hover:animate-pulse-neon">
-                  {project.title}
-                </h3>
-                
-                <p className="font-rajdhani text-foreground/80 mb-4 leading-relaxed">
-                  {project.description}
-                </p>
+              <h3 className="text-xl font-semibold text-foreground mb-3">
+                {project.title}
+              </h3>
+              
+              <p className="text-muted-foreground mb-4 leading-relaxed">
+                {project.description}
+              </p>
 
-                <div className="mb-4">
-                  <h4 className="font-rajdhani font-semibold text-accent mb-2">Technologies:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3 py-1 bg-primary/10 border border-primary/30 rounded-full font-rajdhani text-sm text-primary"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+              <div className="mb-4">
+                <h4 className="font-semibold text-foreground mb-2 text-sm">Technologies:</h4>
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
+              </div>
 
-                <div className="mb-6">
-                  <h4 className="font-rajdhani font-semibold text-secondary mb-2">Business Impact:</h4>
-                  <ul className="space-y-1">
-                    {project.impact.map((impact, idx) => (
-                      <li key={idx} className="font-rajdhani text-sm text-foreground/70 flex items-center">
-                        <span className="w-2 h-2 bg-accent rounded-full mr-3 animate-pulse"></span>
-                        {impact}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className="mb-6">
+                <h4 className="font-semibold text-foreground mb-2 text-sm">Business Impact:</h4>
+                <ul className="space-y-1">
+                  {project.impact.map((impact, idx) => (
+                    <li key={idx} className="text-sm text-muted-foreground flex items-center">
+                      <span className="w-2 h-2 bg-primary rounded-full mr-3"></span>
+                      {impact}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-                <div className="flex gap-4">
-                  <button className="flex-1 px-4 py-2 bg-gradient-to-r from-primary to-secondary text-background font-rajdhani font-semibold rounded-lg hover:scale-105 transition-all duration-300 animate-glow">
-                    VIEW DEMO
-                  </button>
-                  <button className="px-4 py-2 border border-primary text-primary font-rajdhani font-semibold rounded-lg hover:bg-primary hover:text-background transition-all duration-300 neon-border">
-                    CODE
-                  </button>
-                </div>
+              <div className="flex gap-3">
+                <button className="flex-1 px-4 py-2 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors duration-200">
+                  View Demo
+                </button>
+                <button className="px-4 py-2 border border-primary text-primary font-medium rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors duration-200">
+                  View Code
+                </button>
               </div>
             </div>
           ))}
