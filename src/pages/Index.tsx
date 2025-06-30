@@ -1,11 +1,31 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState, useEffect } from 'react';
+import Hero from '../components/Hero';
+import Skills from '../components/Skills';
+import Projects from '../components/Projects';
+import Certifications from '../components/Certifications';
+import Contact from '../components/Contact';
+import ParticleBackground from '../components/ParticleBackground';
+import Navigation from '../components/Navigation';
 
 const Index = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <ParticleBackground />
+      <Navigation />
+      
+      <div className={`transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+        <Hero />
+        <Skills />
+        <Projects />
+        <Certifications />
+        <Contact />
       </div>
     </div>
   );
