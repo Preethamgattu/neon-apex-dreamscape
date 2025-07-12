@@ -25,12 +25,19 @@ public with sharing class PortfolioGenerator {
         return html;
     }
     
+    private String escapeHtml(String input) {
+        if (String.isBlank(input)) {
+            return '';
+        }
+        return input.escapeHtml4();
+    }
+    
     private String generateHead(PortfolioController.PersonalInfo info) {
         String head = '<head>\n';
         head += '<meta charset="UTF-8">\n';
         head += '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n';
-        head += '<title>' + info.fullName + ' - ' + info.title + '</title>\n';
-        head += '<meta name="description" content="' + info.bio + '">\n';
+        head += '<title>' + escapeHtml(info.fullName) + ' - ' + escapeHtml(info.title) + '</title>\n';
+        head += '<meta name="description" content="' + escapeHtml(info.bio) + '">\n';
         head += '<script src="https://cdn.tailwindcss.com"></script>\n';
         head += '<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">\n';
         head += generateCustomCSS();
@@ -55,7 +62,7 @@ public with sharing class PortfolioGenerator {
         nav += '<div class="max-w-7xl mx-auto px-4">\n';
         nav += '<div class="flex justify-between items-center py-4">\n';
         nav += '<div class="flex items-center">\n';
-        nav += '<span class="text-xl font-bold text-gray-800">' + info.fullName + '</span>\n';
+        nav += '<span class="text-xl font-bold text-gray-800">' + escapeHtml(info.fullName) + '</span>\n';
         nav += '</div>\n';
         nav += '<div class="hidden md:flex space-x-8">\n';
         nav += '<a href="#home" class="text-gray-700 hover:text-blue-600 transition duration-300">Home</a>\n';
@@ -73,19 +80,19 @@ public with sharing class PortfolioGenerator {
     private String generateHeroSection(PortfolioController.PersonalInfo info) {
         String hero = '<section id="home" class="gradient-bg min-h-screen flex items-center justify-center pt-16">\n';
         hero += '<div class="text-center text-white px-4">\n';
-        hero += '<h1 class="text-5xl md:text-7xl font-bold mb-4">' + info.fullName + '</h1>\n';
-        hero += '<p class="text-xl md:text-2xl mb-6 typing-animation">' + info.title + '</p>\n';
-        hero += '<p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">' + info.bio + '</p>\n';
+        hero += '<h1 class="text-5xl md:text-7xl font-bold mb-4">' + escapeHtml(info.fullName) + '</h1>\n';
+        hero += '<p class="text-xl md:text-2xl mb-6 typing-animation">' + escapeHtml(info.title) + '</p>\n';
+        hero += '<p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">' + escapeHtml(info.bio) + '</p>\n';
         hero += '<div class="flex justify-center space-x-6">\n';
         
         if (String.isNotBlank(info.linkedinUrl)) {
-            hero += '<a href="' + info.linkedinUrl + '" target="_blank" class="text-white hover:text-blue-300 transition duration-300">\n';
+            hero += '<a href="' + escapeHtml(info.linkedinUrl) + '" target="_blank" class="text-white hover:text-blue-300 transition duration-300">\n';
             hero += '<i class="fab fa-linkedin text-3xl"></i>\n';
             hero += '</a>\n';
         }
         
         if (String.isNotBlank(info.githubUrl)) {
-            hero += '<a href="' + info.githubUrl + '" target="_blank" class="text-white hover:text-blue-300 transition duration-300">\n';
+            hero += '<a href="' + escapeHtml(info.githubUrl) + '" target="_blank" class="text-white hover:text-blue-300 transition duration-300">\n';
             hero += '<i class="fab fa-github text-3xl"></i>\n';
             hero += '</a>\n';
         }
@@ -101,32 +108,40 @@ public with sharing class PortfolioGenerator {
         skills += '<div class="max-w-7xl mx-auto px-4">\n';
         skills += '<h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Technical Skills</h2>\n';
         
-        for (PortfolioController.SkillCategory category : skillCategories) {
-            skills += '<div class="mb-12">\n';
-            skills += '<h3 class="text-2xl font-semibold text-gray-700 mb-6">' + category.category + '</h3>\n';
-            skills += '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n';
-            
-            for (PortfolioController.SkillInfo skill : category.skillList) {
-                skills += '<div class="bg-gray-50 p-6 rounded-lg card-hover">\n';
-                skills += '<div class="flex items-center mb-3">\n';
-                
-                if (String.isNotBlank(skill.iconName)) {
-                    skills += '<i class="' + skill.iconName + ' text-2xl text-blue-600 mr-3"></i>\n';
+        if (skillCategories != null && !skillCategories.isEmpty()) {
+            for (PortfolioController.SkillCategory category : skillCategories) {
+                if (category != null) {
+                    skills += '<div class="mb-12">\n';
+                    skills += '<h3 class="text-2xl font-semibold text-gray-700 mb-6">' + escapeHtml(category.category) + '</h3>\n';
+                    skills += '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n';
+                    
+                    if (category.skillList != null && !category.skillList.isEmpty()) {
+                        for (PortfolioController.SkillInfo skill : category.skillList) {
+                            if (skill != null) {
+                                skills += '<div class="bg-gray-50 p-6 rounded-lg card-hover">\n';
+                                skills += '<div class="flex items-center mb-3">\n';
+                                
+                                if (String.isNotBlank(skill.iconName)) {
+                                    skills += '<i class="' + escapeHtml(skill.iconName) + ' text-2xl text-blue-600 mr-3"></i>\n';
+                                }
+                                
+                                skills += '<h4 class="text-lg font-semibold text-gray-800">' + escapeHtml(skill.name) + '</h4>\n';
+                                skills += '</div>\n';
+                                skills += '<p class="text-sm text-gray-600 mb-3">' + escapeHtml(skill.proficiency) + '</p>\n';
+                                
+                                if (String.isNotBlank(skill.description)) {
+                                    skills += '<p class="text-sm text-gray-500">' + escapeHtml(skill.description) + '</p>\n';
+                                }
+                                
+                                skills += '</div>\n';
+                            }
+                        }
+                    }
+                    
+                    skills += '</div>\n';
+                    skills += '</div>\n';
                 }
-                
-                skills += '<h4 class="text-lg font-semibold text-gray-800">' + skill.name + '</h4>\n';
-                skills += '</div>\n';
-                skills += '<p class="text-sm text-gray-600 mb-3">' + skill.proficiency + '</p>\n';
-                
-                if (String.isNotBlank(skill.description)) {
-                    skills += '<p class="text-sm text-gray-500">' + skill.description + '</p>\n';
-                }
-                
-                skills += '</div>\n';
             }
-            
-            skills += '</div>\n';
-            skills += '</div>\n';
         }
         
         skills += '</div>\n';
@@ -140,41 +155,47 @@ public with sharing class PortfolioGenerator {
         projectSection += '<h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Featured Projects</h2>\n';
         projectSection += '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">\n';
         
-        for (PortfolioController.ProjectInfo project : projects) {
-            projectSection += '<div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">\n';
-            projectSection += '<div class="p-6">\n';
-            projectSection += '<h3 class="text-xl font-semibold text-gray-800 mb-3">' + project.title + '</h3>\n';
-            projectSection += '<p class="text-gray-600 mb-4">' + project.description + '</p>\n';
-            
-            if (project.technologies != null && !project.technologies.isEmpty()) {
-                projectSection += '<div class="flex flex-wrap gap-2 mb-4">\n';
-                for (String tech : project.technologies) {
-                    projectSection += '<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">' + tech + '</span>\n';
+        if (projects != null && !projects.isEmpty()) {
+            for (PortfolioController.ProjectInfo project : projects) {
+                if (project != null) {
+                    projectSection += '<div class="bg-white rounded-lg shadow-lg overflow-hidden card-hover">\n';
+                    projectSection += '<div class="p-6">\n';
+                    projectSection += '<h3 class="text-xl font-semibold text-gray-800 mb-3">' + escapeHtml(project.title) + '</h3>\n';
+                    projectSection += '<p class="text-gray-600 mb-4">' + escapeHtml(project.description) + '</p>\n';
+                    
+                    if (project.technologies != null && !project.technologies.isEmpty()) {
+                        projectSection += '<div class="flex flex-wrap gap-2 mb-4">\n';
+                        for (String tech : project.technologies) {
+                            if (String.isNotBlank(tech)) {
+                                projectSection += '<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">' + escapeHtml(tech) + '</span>\n';
+                            }
+                        }
+                        projectSection += '</div>\n';
+                    }
+                    
+                    if (String.isNotBlank(project.businessImpact)) {
+                        projectSection += '<p class="text-sm text-gray-500 mb-4"><strong>Impact:</strong> ' + escapeHtml(project.businessImpact) + '</p>\n';
+                    }
+                    
+                    projectSection += '<div class="flex space-x-4">\n';
+                    
+                    if (String.isNotBlank(project.demoUrl)) {
+                        projectSection += '<a href="' + escapeHtml(project.demoUrl) + '" target="_blank" class="text-blue-600 hover:text-blue-800 transition duration-300">\n';
+                        projectSection += '<i class="fas fa-external-link-alt mr-1"></i>Demo\n';
+                        projectSection += '</a>\n';
+                    }
+                    
+                    if (String.isNotBlank(project.codeUrl)) {
+                        projectSection += '<a href="' + escapeHtml(project.codeUrl) + '" target="_blank" class="text-gray-600 hover:text-gray-800 transition duration-300">\n';
+                        projectSection += '<i class="fab fa-github mr-1"></i>Code\n';
+                        projectSection += '</a>\n';
+                    }
+                    
+                    projectSection += '</div>\n';
+                    projectSection += '</div>\n';
+                    projectSection += '</div>\n';
                 }
-                projectSection += '</div>\n';
             }
-            
-            if (String.isNotBlank(project.businessImpact)) {
-                projectSection += '<p class="text-sm text-gray-500 mb-4"><strong>Impact:</strong> ' + project.businessImpact + '</p>\n';
-            }
-            
-            projectSection += '<div class="flex space-x-4">\n';
-            
-            if (String.isNotBlank(project.demoUrl)) {
-                projectSection += '<a href="' + project.demoUrl + '" target="_blank" class="text-blue-600 hover:text-blue-800 transition duration-300">\n';
-                projectSection += '<i class="fas fa-external-link-alt mr-1"></i>Demo\n';
-                projectSection += '</a>\n';
-            }
-            
-            if (String.isNotBlank(project.codeUrl)) {
-                projectSection += '<a href="' + project.codeUrl + '" target="_blank" class="text-gray-600 hover:text-gray-800 transition duration-300">\n';
-                projectSection += '<i class="fab fa-github mr-1"></i>Code\n';
-                projectSection += '</a>\n';
-            }
-            
-            projectSection += '</div>\n';
-            projectSection += '</div>\n';
-            projectSection += '</div>\n';
         }
         
         projectSection += '</div>\n';
@@ -189,27 +210,34 @@ public with sharing class PortfolioGenerator {
         certSection += '<h2 class="text-4xl font-bold text-center text-gray-800 mb-12">Certifications</h2>\n';
         certSection += '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n';
         
-        for (PortfolioController.CertificationInfo cert : certifications) {
-            certSection += '<div class="bg-gray-50 p-6 rounded-lg card-hover">\n';
-            certSection += '<h3 class="text-lg font-semibold text-gray-800 mb-2">' + cert.title + '</h3>\n';
-            certSection += '<p class="text-blue-600 font-medium mb-2">' + cert.issuer + '</p>\n';
-            certSection += '<p class="text-sm text-gray-600 mb-2">Obtained: ' + cert.dateObtained.format() + '</p>\n';
-            
-            if (String.isNotBlank(cert.credentialId)) {
-                certSection += '<p class="text-sm text-gray-500 mb-2">ID: ' + cert.credentialId + '</p>\n';
+        if (certifications != null && !certifications.isEmpty()) {
+            for (PortfolioController.CertificationInfo cert : certifications) {
+                if (cert != null) {
+                    certSection += '<div class="bg-gray-50 p-6 rounded-lg card-hover">\n';
+                    certSection += '<h3 class="text-lg font-semibold text-gray-800 mb-2">' + escapeHtml(cert.title) + '</h3>\n';
+                    certSection += '<p class="text-blue-600 font-medium mb-2">' + escapeHtml(cert.issuer) + '</p>\n';
+                    
+                    if (cert.dateObtained != null) {
+                        certSection += '<p class="text-sm text-gray-600 mb-2">Obtained: ' + cert.dateObtained.format() + '</p>\n';
+                    }
+                    
+                    if (String.isNotBlank(cert.credentialId)) {
+                        certSection += '<p class="text-sm text-gray-500 mb-2">ID: ' + escapeHtml(cert.credentialId) + '</p>\n';
+                    }
+                    
+                    certSection += '<span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">' + escapeHtml(cert.status) + '</span>\n';
+                    
+                    if (String.isNotBlank(cert.verificationUrl)) {
+                        certSection += '<div class="mt-4">\n';
+                        certSection += '<a href="' + escapeHtml(cert.verificationUrl) + '" target="_blank" class="text-blue-600 hover:text-blue-800 transition duration-300 text-sm">\n';
+                        certSection += '<i class="fas fa-certificate mr-1"></i>Verify\n';
+                        certSection += '</a>\n';
+                        certSection += '</div>\n';
+                    }
+                    
+                    certSection += '</div>\n';
+                }
             }
-            
-            certSection += '<span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">' + cert.status + '</span>\n';
-            
-            if (String.isNotBlank(cert.verificationUrl)) {
-                certSection += '<div class="mt-4">\n';
-                certSection += '<a href="' + cert.verificationUrl + '" target="_blank" class="text-blue-600 hover:text-blue-800 transition duration-300 text-sm">\n';
-                certSection += '<i class="fas fa-certificate mr-1"></i>Verify\n';
-                certSection += '</a>\n';
-                certSection += '</div>\n';
-            }
-            
-            certSection += '</div>\n';
         }
         
         certSection += '</div>\n';
@@ -223,7 +251,7 @@ public with sharing class PortfolioGenerator {
         contact += '<div class="max-w-7xl mx-auto px-4 text-center">\n';
         contact += '<h2 class="text-4xl font-bold mb-8">Get In Touch</h2>\n';
         contact += '<p class="text-xl mb-8">Ready to discuss your next Salesforce project?</p>\n';
-        contact += '<a href="mailto:' + info.email + '" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300">\n';
+        contact += '<a href="mailto:' + escapeHtml(info.email) + '" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300">\n';
         contact += 'Contact Me\n';
         contact += '</a>\n';
         contact += '</div>\n';
@@ -234,7 +262,7 @@ public with sharing class PortfolioGenerator {
     private String generateFooter() {
         String footer = '<footer class="bg-gray-900 text-white py-8">\n';
         footer += '<div class="max-w-7xl mx-auto px-4 text-center">\n';
-        footer += '<p>&copy; ' + System.today().year() + ' Generated by Salesforce Portfolio System. All rights reserved.</p>\n';
+        footer += '<p>&copy; ' + String.valueOf(System.today().year()) + ' Generated by Salesforce Portfolio System. All rights reserved.</p>\n';
         footer += '</div>\n';
         footer += '</footer>\n';
         return footer;
