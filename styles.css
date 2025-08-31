@@ -90,6 +90,7 @@ body {
     top: 0;
     width: 100%;
     background: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     z-index: 1000;
     transition: all 0.3s ease;
@@ -276,7 +277,7 @@ body {
 .floating-icon {
     position: absolute;
     font-size: 3rem;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(14, 9, 9, 0.3);
     animation: float 6s ease-in-out infinite;
 }
 
@@ -867,11 +868,11 @@ section {
     /* Hide custom cursor on mobile */
     .custom-cursor,
     .custom-cursor-dot {
-        display: none;
+        display: none !important;
     }
 
     body {
-        cursor: auto;
+        cursor: auto !important;
     }
 }
 
