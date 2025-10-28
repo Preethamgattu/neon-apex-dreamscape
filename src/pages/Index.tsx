@@ -7,6 +7,7 @@ import Certifications from '../components/Certifications';
 import Contact from '../components/Contact';
 import ParticleBackground from '../components/ParticleBackground';
 import Navigation from '../components/Navigation';
+import CustomCursor from '../components/CustomCursor';
 
 const Index = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -17,6 +18,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <CustomCursor />
       <ParticleBackground />
       <Navigation />
       
