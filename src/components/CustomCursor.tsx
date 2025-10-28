@@ -23,23 +23,42 @@ const CustomCursor = () => {
     // Add mousemove listener
     document.addEventListener('mousemove', updateCursorPosition);
 
-    // Add hover listeners to interactive elements
-    const interactiveElements = document.querySelectorAll(
-      'a, button, [role="button"], .skill-card, .project-card, .cert-card, input, textarea'
-    );
+    // Function to add listeners to interactive elements
+    const addListenersToElements = () => {
+      const interactiveElements = document.querySelectorAll(
+        'a, button, [role="button"], input, textarea'
+      );
 
-    interactiveElements.forEach((element) => {
-      element.addEventListener('mouseenter', handleMouseEnter);
-      element.addEventListener('mouseleave', handleMouseLeave);
+      interactiveElements.forEach((element) => {
+        element.addEventListener('mouseenter', handleMouseEnter);
+        element.addEventListener('mouseleave', handleMouseLeave);
+      });
+    };
+
+    // Initial setup
+    addListenersToElements();
+
+    // Observe DOM changes to handle dynamically added elements
+    const observer = new MutationObserver(() => {
+      addListenersToElements();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
     });
 
     // Cleanup
     return () => {
       document.removeEventListener('mousemove', updateCursorPosition);
+      const interactiveElements = document.querySelectorAll(
+        'a, button, [role="button"], input, textarea'
+      );
       interactiveElements.forEach((element) => {
         element.removeEventListener('mouseenter', handleMouseEnter);
         element.removeEventListener('mouseleave', handleMouseLeave);
       });
+      observer.disconnect();
     };
   }, []);
 
